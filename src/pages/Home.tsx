@@ -1,6 +1,4 @@
 import { Link } from 'react-router-dom';
-import FileUpload from '../components/FileUpload';
-import { uploadPlayerData, uploadPitcherData } from '../services/uploadService';
 
 const Home = () => {
   return (
@@ -37,22 +35,6 @@ const Home = () => {
             View Pitchers
           </Link>
         </div>
-      </div>
-
-      <h2 className="page-title text-2xl !mt-20 !mb-10 data-management-title">Data Management</h2>
-      
-      <div className="card-grid">
-        <FileUpload 
-          title="Upload Player Data"
-          description="Upload your player statistics data file (CSV or Excel format). This will update the hitter statistics in the system."
-          onUpload={uploadPlayerData}
-        />
-        
-        <FileUpload 
-          title="Upload Pitcher Data"
-          description="Upload your pitcher statistics data file (CSV or Excel format). This will update the pitcher statistics in the system."
-          onUpload={uploadPitcherData}
-        />
       </div>
     </div>
   );
