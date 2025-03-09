@@ -56,6 +56,18 @@ const Header = () => {
             >
               Teams
             </Link>
+            <Link 
+              to="/sgcalc" 
+              className="header-link"
+            >
+              SG Calc
+            </Link>
+            <Link 
+              to="/lineup" 
+              className="header-link"
+            >
+              Lineup Optimizer
+            </Link>
           </nav>
           
           {/* Mobile menu button - only visible on mobile */}
@@ -136,6 +148,20 @@ const Header = () => {
               onClick={() => setIsMenuOpen(false)}
             >
               Teams
+            </Link>
+            <Link 
+              to="/sgcalc" 
+              className="text-lg py-2 px-3 rounded-md hover:bg-blue-700"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              SG Calc
+            </Link>
+            <Link 
+              to="/lineup" 
+              className="text-lg py-2 px-3 rounded-md hover:bg-blue-700"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Lineup Optimizer
             </Link>
           </div>
         </nav>

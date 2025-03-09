@@ -40,28 +40,30 @@ const AddPlayerModal: React.FC<AddPlayerModalProps> = ({
     }
 
     // Map roster positions to actual positions based on API documentation
-    const positionMap: Record<string, string[]> = {
-      'C': ['C'],
-      '1B': ['1B'],
-      '2B': ['2B'],
-      'SS': ['SS'],
-      '3B': ['3B'],
-      'MI': ['2B', 'SS'],
-      'CI': ['1B', '3B'],
-      'OF1': ['OF'],
-      'OF2': ['OF'],
-      'OF3': ['OF'],
-      'OF4': ['OF'],
-      'OF5': ['OF'],
-      'UT': ['C', '1B', '2B', 'SS', '3B', 'OF', 'DH'],
-      'Bench1': ['C', '1B', '2B', 'SS', '3B', 'OF', 'DH'],
-      'Bench2': ['C', '1B', '2B', 'SS', '3B', 'OF', 'DH'],
-      'Bench3': ['C', '1B', '2B', 'SS', '3B', 'OF', 'DH']
+    const positionMap: Record<string, string> = {
+      'C': 'C',
+      '1B': 'FirstBase',
+      '2B': 'SecondBase',
+      'SS': 'ShortStop',
+      '3B': 'ThirdBase',
+      'MI': 'MiddleInfielder',
+      'CI': 'CornerInfielder',
+      'OF1': 'Outfield1',
+      'OF2': 'Outfield2',
+      'OF3': 'Outfield3',
+      'OF4': 'Outfield4',
+      'OF5': 'Outfield5',
+      'UT': 'Utility',
+      'Bench1': 'Bench1',
+      'Bench2': 'Bench2',
+      'Bench3': 'Bench3'
     };
 
     // Get the base position without numbers
     const basePosition = rosterPosition.replace(/\d+$/, '');
-    return positionMap[basePosition]?.[0] || positionMap[rosterPosition]?.[0];
+    
+    // Try to get the mapped position, first with the full position name, then with the base position
+    return positionMap[rosterPosition] || positionMap[basePosition];
   }, [playerType]);
 
   // Fetch available players when the modal opens
@@ -77,7 +79,10 @@ const AddPlayerModal: React.FC<AddPlayerModalProps> = ({
 
       try {
         const playersService = new PlayersService();
-        const searchPosition = mapPositionToApiPosition(position);
+        // Use apiPosition directly if provided, otherwise map the display position
+        const searchPosition = apiPosition || mapPositionToApiPosition(position);
+        
+        console.log(`Fetching ${playerType} players for position: ${position}, API position: ${searchPosition}`);
         
         let players: (Hitter | Pitcher)[] = [];
         
@@ -98,7 +103,7 @@ const AddPlayerModal: React.FC<AddPlayerModalProps> = ({
     };
 
     fetchAvailablePlayers();
-  }, [isOpen, position, playerType, mapPositionToApiPosition]);
+  }, [isOpen, position, apiPosition, playerType, mapPositionToApiPosition]);
 
   // Filter players based on search input
   useEffect(() => {
@@ -126,7 +131,7 @@ const AddPlayerModal: React.FC<AddPlayerModalProps> = ({
       return;
     }
 
-    // Map position to API position if not provided
+    // Use apiPosition directly if provided, otherwise map the display position
     let positionToUse = apiPosition;
     if (!positionToUse) {
       // Default mapping based on position
@@ -138,18 +143,18 @@ const AddPlayerModal: React.FC<AddPlayerModalProps> = ({
         '3B': 'ThirdBase',
         'MI': 'MiddleInfielder',
         'CI': 'CornerInfielder',
-        'OF': 'Outfield1',
+        'OF': 'Outfield1', // Default to Outfield1 if just OF is provided
         'OF1': 'Outfield1',
         'OF2': 'Outfield2',
         'OF3': 'Outfield3',
         'OF4': 'Outfield4',
         'OF5': 'Outfield5',
         'UT': 'Utility',
-        'Bench': 'Bench1',
+        'Bench': 'Bench1', // Default to Bench1 if just Bench is provided
         'Bench1': 'Bench1',
         'Bench2': 'Bench2',
         'Bench3': 'Bench3',
-        'P': 'Pitcher1',
+        'P': 'Pitcher1', // Default to Pitcher1 if just P is provided
         'P1': 'Pitcher1',
         'P2': 'Pitcher2',
         'P3': 'Pitcher3',
@@ -164,10 +169,13 @@ const AddPlayerModal: React.FC<AddPlayerModalProps> = ({
       positionToUse = defaultPositionMap[position];
       
       if (!positionToUse) {
+        console.error(`Could not map position "${position}" to a valid API position.`);
         setError(`Could not map position "${position}" to a valid API position.`);
         return;
       }
     }
+    
+    console.log(`Updating roster with player ${selectedPlayer.PlayerName} at position: ${positionToUse}`);
 
     setIsSubmitting(true);
     setError(null);

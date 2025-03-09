@@ -362,6 +362,7 @@ const PitcherRosterGrid: React.FC<PitcherRosterGridProps> = ({
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           position={roster[selectedPositionIndex].position}
+          apiPosition={roster[selectedPositionIndex].apiPosition}
           playerType="pitcher"
           onAddPlayer={handleAddPlayer}
           teamId={teamId}

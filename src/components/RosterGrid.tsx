@@ -360,6 +360,7 @@ const RosterGrid: React.FC<RosterGridProps> = ({
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           position={roster[selectedPositionIndex].position}
+          apiPosition={roster[selectedPositionIndex].apiPosition}
           playerType="hitter"
           onAddPlayer={handleAddPlayer}
           teamId={teamId}

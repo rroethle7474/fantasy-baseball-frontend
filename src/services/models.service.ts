@@ -6,7 +6,9 @@ import {
   BenchmarksResponse,
   WhatIfRequest,
   WhatIfResponse,
-  UploadResponse
+  UploadResponse,
+  StandardGainsResponse,
+  StandardGainsRequest
 } from '../models/models.model';
 
 /**
@@ -83,12 +85,28 @@ export class ModelsService {
     }
     
     // Use the direct axios instance to handle FormData properly
-    const response = await this.apiService['api'].post<UploadResponse>('/upload', formData, {
+    const response = await this.apiService['api'].post<UploadResponse>('/models/upload', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
     });
     
     return response.data;
+  }
+
+  /**
+   * Calculate standard gains for a team based on a model
+   * @param teamId The team ID to calculate for
+   * @param modelId The model ID to use for thresholds
+   * @returns Promise with the standard gains calculation results
+   */
+  public async calculateStandardGains(
+    teamId: number,
+    modelId: number
+  ): Promise<StandardGainsResponse> {
+    return this.apiService.post<StandardGainsResponse, StandardGainsRequest>(
+      '/calculate-standard-gains',
+      { team_id: teamId, model_id: modelId }
+    );
   }
 } 

@@ -1,5 +1,6 @@
 // Players model based on API documentation
 import { Hitter, Pitcher, HitterPosition } from './teams.model';
+import { HitterPlayer, PitcherPlayer } from './models.model';
 
 export interface AvailablePlayersRequest {
   player_type: 'hitter' | 'pitcher';
@@ -19,3 +20,16 @@ export interface AvailablePitchersResponse {
 }
 
 export type AvailablePlayersResponse = AvailableHittersResponse | AvailablePitchersResponse; 
+
+export interface FreeAgentHittersResponse {
+  hitters: HitterPlayer[];
+}
+
+export interface FreeAgentPitchersResponse {
+  pitchers: PitcherPlayer[];
+}
+
+export interface SetFreeAgentResponse {
+  success: boolean;
+  message: string;
+} 

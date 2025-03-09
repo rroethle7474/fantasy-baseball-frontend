@@ -4,7 +4,9 @@ import Home from './pages/Home';
 import Hitters from './pages/Hitters';
 import Pitchers from './pages/Pitchers';
 import Teams from './pages/Teams';
+import SGCalc from './pages/SGCalc';
 import './App.css';
+import LineupOptimizer from './pages/LineupOptimizer';
 
 function App() {
   return (
@@ -15,6 +17,8 @@ function App() {
           <Route path="/hitters" element={<Hitters />} />
           <Route path="/pitchers" element={<Pitchers />} />
           <Route path="/teams" element={<Teams />} />
+          <Route path="/sgcalc" element={<SGCalc />} />
+          <Route path="/lineup" element={<LineupOptimizer />} />
         </Routes>
       </Layout>
     </Router>
